@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<html>
+        <body>
+        
+
+        <div class="container" align="center">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <form class="card-body">
+                            <div class="row">
+                                
+                                
+    
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>    
+        </div>
+
+
+
+     <div class="container" align="center">
+        <div class="row">
+            {% for i in product_list %}
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <img class="card-img-top" src="{{i.image}}" alt="Card image cap">
+                        <div id=nm{{i.id}} class="card-title">
+                            <b>{{i.name}}</b>
+                        </div>
+                        <div class="card-title" id="oprice">
+                             <strike><b>INR.{{i.original_price}}</b></strike>
+                        </div>
+                        <div class="card-title" id="dprice">
+                            <b>INR.{{i.discounted_price}}</b>
+                       </div>
+                       {% if user.is_authenticated %}
+                            <button class="btn btn-warning">Buy Now</button>&nbsp;&nbsp;
+                            <button  id={{i.id}} class="btn atc btn-warning">Add To Cart</button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            
+            </div>
+            {% endfor %}
+        </div>
+     </div>
+        
+        
+     
+    </body>
+
+<script type="text/javascript">
+
+if(localStorage.getItem('cart')==null)
+{
+    var cart={}
+}
+else{
+    cart=JSON.parse(localStorage.getItem('cart'))
+}
+
+
+$(document).on('click','.atc',function()
+{
+    var id=this.id.toString() 
+    console.log(id)
+
+
+if(cart[id]!=undefined)
+{
+    cart[id]=cart[id]+1
+}
+else{
+    cart[id]=1
+}
+console.log(cart)
+
+
+localStorage.setItem('cart',JSON.stringify(cart))
+});
+
+
+myCart(cart)
+
+function myCart(cart)
+{
+   
+    var cartString=""
+    cartString=cartString+"<h6>This is My Cart</h6>"
+
+
+
+    for(var i in cart)   
+    {
+        cartString=cartString+document.getElementById('nm'+i).innerHTML + "Qty:" + cart[i] + "<br>"    
+                            
+    }
+     cartString=cartString+"<a href='/disp' class='btn btn-primary'>Checkout</a>"
+     document.getElementById("welcome").innerHTML=cartString
+
+
+}
+
+
+
+
+
+</script>
+
+
+
+
+
+
+</html>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
